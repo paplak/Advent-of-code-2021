@@ -1,0 +1,14 @@
+file = open(r"day1_input.txt", "r")
+
+line = file.readlines()
+count = 0
+lista = []
+for i in line:
+    lista.append(int(i.strip()))
+    
+for x in range(len(lista)):
+    if lista[x] > lista[x-1]:
+        count += 1
+#         print(lista[x], " jest większe od ", lista[x-1])
+        
+print(count)
