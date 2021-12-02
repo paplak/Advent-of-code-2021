@@ -1,0 +1,51 @@
+# --- Day 2: Dive! ---
+# --- part 1 ---
+
+file = open(r"day2_input.txt", "r")
+
+line = file.readlines()
+horizontal = 0
+depth = 0
+
+
+for i in line:
+    a = i.split()
+#     print(a)
+    
+    if a[0] == "up":
+        depth = depth - int(a[1])
+        
+    elif a[0] == "down":
+        depth = depth + int(a[1])
+        
+    elif a[0] == "forward":
+        horizontal = horizontal + int(a[1])
+    
+position = depth * horizontal
+print(position)
+
+# --- part 2 ---
+
+file = open(r"day2_input.txt", "r")
+
+line = file.readlines()
+horizontal = 0
+depth = 0
+aim = 0
+
+for i in line:
+    a = i.split()
+#     print(a)
+    
+    if a[0] == "up":
+        aim = aim - int(a[1])
+        
+    elif a[0] == "down":
+        aim = aim + int(a[1])
+        
+    elif a[0] == "forward":
+        horizontal = horizontal + int(a[1])
+        depth = depth + aim * int(a[1])
+        
+position = depth * horizontal
+print(position)
