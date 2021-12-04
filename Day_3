@@ -1,0 +1,188 @@
+# --- Day 3: Binary Diagnostic ---
+
+# --- part 1 ---
+
+# binary to decimal
+def binaryToDecimal(n):
+    return int(n,2)
+# list do intger
+def listToInteger(list):
+    s = [str(i) for i in list]
+    res = int("".join(s))
+    return(res)
+
+
+file = open(r"day3_input.txt", "r")
+line = file.readlines()
+
+gamma_bin = [0]
+epsilon_bin = [0]
+count_0 = [0]
+count_1 = [0]
+
+for x in range(11):
+    count_0.append(0)
+    count_1.append(0)
+    gamma_bin.append(0)
+    epsilon_bin.append(0)
+
+    
+for i in line:
+    a = i.split()
+    a = a[0]
+    count = 0
+
+    for b in a:
+        if int(b) == 0:
+            count_0[count] += 1
+        if int(b) == 1:
+            count_1[count] += 1    
+        count += 1
+        
+# print(count_0)
+# print(count_1)
+
+for x in range(len(count_0)):
+    if count_0[x] > count_1[x]:
+        gamma_bin[x] = 0
+        epsilon_bin[x] = 1
+        
+    else:
+        gamma_bin[x] = 1
+        epsilon_bin[x] = 0        
+
+gamma_bin = listToInteger(gamma_bin)
+epsilon_bin = listToInteger(epsilon_bin)
+
+
+
+gamma_rate = binaryToDecimal(str(gamma_bin))
+epsilon_rate = binaryToDecimal(str(epsilon_bin))
+
+power_consumption = gamma_rate * epsilon_rate
+print(power_consumption)
+
+
+# --- part 2 ---
+# binary to decimal
+def binaryToDecimal(n):
+    return int(n,2)
+
+file = open(r"day3_input.txt", "r")
+lines = file.readlines()
+
+# print(len(lines[0])-1)
+
+
+count_0 = [0]
+count_1 = [0]
+
+for x in range(len(lines[0])-2):
+    count_0.append(0)
+    count_1.append(0)
+
+
+current_list = lines
+new_list = []    
+for i in range(len(lines[0])-1):
+    if len(new_list) != 0:
+        current_list = new_list
+    lenght_list = len(current_list)
+    count_0 = list(0 for k in range(len(lines[0])-1))
+    count_1 = list(0 for k in range(len(lines[0])-1))   
+    
+    for line in current_list:
+        a = line.split()
+        a = a[0]
+        count = 0
+
+        for b in a:
+            if int(b) == 0:
+                count_0[count] += 1
+            if int(b) == 1:
+                count_1[count] += 1
+            count += 1
+            
+    
+    if count_0[i] > count_1[i]:
+        current_bit_position = 0
+    elif count_0[i] < count_1[i]:
+        current_bit_position = 1
+    else:
+        current_bit_position = 2
+        
+#     print(current_bit_position)
+    
+    
+    new_list = []
+    for x in range(lenght_list):
+#         print(current_list[x][i])
+#         print('bit',current_bit_position)
+        if current_bit_position == 2:
+            if int(current_list[x][i]) == 1:
+                new_list.append(current_list[x].split()[0]) 
+        elif int(current_list[x][i]) == int(current_bit_position):
+            new_list.append(current_list[x].split()[0])
+
+    if len(new_list) == 1:
+        oxygen_generator_rating_bin = new_list[0]
+        break
+
+        
+    
+# print(oxygen_generator_rating_bin)
+
+
+
+current_list = lines
+new_list = []    
+for i in range(len(lines[0])-1):
+    if len(new_list) != 0:
+        current_list = new_list
+    lenght_list = len(current_list)
+    count_0 = list(0 for k in range(len(lines[0])-1))
+    count_1 = list(0 for k in range(len(lines[0])-1))    
+    
+    for line in current_list:
+        a = line.split()
+        a = a[0]
+        count = 0
+
+        for b in a:
+            if int(b) == 0:
+                count_0[count] += 1
+            if int(b) == 1:
+                count_1[count] += 1
+            count += 1
+    if count_0[i] > count_1[i]:
+        current_bit_position = 0
+    elif count_0[i] < count_1[i]:
+        current_bit_position = 1
+    else:
+        current_bit_position = 2
+        
+#     print(current_bit_position)
+    
+    new_list = []
+    for x in range(lenght_list):
+#         print(current_list[x][i])
+#         print('bit',current_bit_position)
+        if current_bit_position == 2:
+            if int(current_list[x][i]) == 0:
+                new_list.append(current_list[x].split()[0])
+        elif int(current_list[x][i]) != int(current_bit_position):
+            new_list.append(current_list[x].split()[0])
+
+    if len(new_list) == 1:
+        CO2_scrubber_rating_bin = new_list[0]
+        break
+
+        
+# print(CO2_scrubber_rating_bin)
+
+oxygen_generator_rating = binaryToDecimal(oxygen_generator_rating_bin)
+CO2_scrubber_rating = binaryToDecimal(CO2_scrubber_rating_bin)
+life_support_rating = oxygen_generator_rating * CO2_scrubber_rating
+# print(oxygen_generator_rating)
+# print(CO2_scrubber_rating)
+life_support_rating
