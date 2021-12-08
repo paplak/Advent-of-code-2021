@@ -1,0 +1,236 @@
+# --- Day 5: Hydrothermal Venture ---
+
+# --- part 1 ---
+
+
+file = open(r"day5_input.txt", "r")
+
+# getting set of vectors
+lines = list(i.strip().split() for i in file.readlines())
+lines_copy = lines
+vectors =[]
+for vector in lines_copy:
+    coordinates = []
+    for coordinate in vector:
+        if not coordinate == '->':
+#             new_coordinate = ''
+#             for x in coordinate:
+#                 if not x == ',':
+#                     new_coordinate += x
+            coordinates.append(coordinate)
+    vectors.append(coordinates)
+
+    
+# print('vectors: ', vectors)
+
+
+# board
+board_size = 0
+for vector in vectors:
+    for coordinate in vector:
+        coordinate = coordinate.split(',')
+        for x in coordinate:
+            if x != ',':
+                if int(x) > board_size:
+                    board_size = int(x) + 1
+# print('board size: ', board_size, '\n')
+board = {}
+for x in range(board_size):
+    for y in range(board_size):
+        board_coordinate = str((x,y))
+        board[board_coordinate] = 0
+        
+        
+# print('board ', board,)
+# print('keys ', board.keys())
+
+# points covered by lines
+for vector in vectors:
+    coordinates_0 = vector[0].split(',')
+    coordinates_1 = vector[-1].split(',')
+    x_0 = int(coordinates_0[0])
+    y_0 = int(coordinates_0[-1])
+    x_1 = int(coordinates_1[0])
+    y_1 = int(coordinates_1[-1])
+    
+#     print('(x0,y0)', x_0,y_0)
+#     print('(x1,y1)', x_1,y_1)
+    
+    
+    if y_0 == y_1:
+        if x_0 != x_1:
+            dots_number = max(x_0,x_1) - min(x_0,x_1) + 1
+        else:
+            dots_number = 1
+#         print(dots_number)
+        for i in range(dots_number):
+            dot_x = min(x_0,x_1) + i
+            dot_y = y_0
+            dot = '(' + str(dot_x) + ', ' + str(dot_y) + ')'
+            board[dot] += 1
+    if x_0 == x_1:
+        if y_0 != y_1:
+            dots_number = max(y_0,y_1) - min(y_0,y_1) + 1
+        else:
+            dots_number = 1
+#         print(dots_number)
+        for i in range(dots_number):
+            dot_x = x_0
+            dot_y = min(y_0,y_1) + i
+            dot = '(' + str(dot_x) + ', ' + str(dot_y) + ')'
+            board[dot] += 1
+            
+#     if x_0 == x_1 and y_0 == y_1:
+#         dot = '(' + str(dot_x) + ', ' + str(dot_y) + ')'
+#         board[dot] += 1
+#             print(dot)
+#             print(dot, board[dot])
+        
+            
+            
+        
+        
+        
+#     print('')
+# print(board)
+
+dots_overlaped = 0
+# print(board.values())
+values_sum = 0
+for value in board.values():
+    values_sum += value
+    if value > 1:
+        dots_overlaped += 1
+        
+print(dots_overlaped)
+# print(values_sum)
+        
+
+# --- part 2 ---
+
+
+file = open(r"day5_input.txt", "r")
+
+# getting set of vectors
+lines = list(i.strip().split() for i in file.readlines())
+lines_copy = lines
+vectors =[]
+for vector in lines_copy:
+    coordinates = []
+    for coordinate in vector:
+        if not coordinate == '->':
+#             new_coordinate = ''
+#             for x in coordinate:
+#                 if not x == ',':
+#                     new_coordinate += x
+            coordinates.append(coordinate)
+    vectors.append(coordinates)
+
+    
+# print('vectors: ', vectors)
+
+
+# board
+board_size = 0
+for vector in vectors:
+    for coordinate in vector:
+        coordinate = coordinate.split(',')
+        for x in coordinate:
+            if x != ',':
+                if int(x) > board_size:
+                    board_size = int(x) + 1
+# print('board size: ', board_size, '\n')
+board = {}
+for x in range(board_size):
+    for y in range(board_size):
+        board_coordinate = str((x,y))
+        board[board_coordinate] = 0
+        
+        
+# print('board ', board,)
+# print('keys ', board.keys())
+
+# points covered by lines
+for vector in vectors:
+    coordinates_0 = vector[0].split(',')
+    coordinates_1 = vector[-1].split(',')
+    x_0 = int(coordinates_0[0])
+    y_0 = int(coordinates_0[-1])
+    x_1 = int(coordinates_1[0])
+    y_1 = int(coordinates_1[-1])
+    
+#     print('(x0,y0)', x_0,y_0)
+#     print('(x1,y1)', x_1,y_1)
+
+    
+# horizontaly or verticaly    
+    if y_0 == y_1:
+        if x_0 != x_1:
+            dots_number = max(x_0,x_1) - min(x_0,x_1) + 1
+        else:
+            dots_number = 1
+#         print(dots_number)
+        for i in range(dots_number):
+            dot_x = min(x_0,x_1) + i
+            dot_y = y_0
+            dot = '(' + str(dot_x) + ', ' + str(dot_y) + ')'
+            board[dot] += 1
+#             print(dot, board[dot])
+    if x_0 == x_1:
+        if y_0 != y_1:
+            dots_number = max(y_0,y_1) - min(y_0,y_1) + 1
+        else:
+            dots_number = 1
+#         print(dots_number)
+        for i in range(dots_number):
+            dot_x = x_0
+            dot_y = min(y_0,y_1) + i
+            dot = '(' + str(dot_x) + ', ' + str(dot_y) + ')'
+            board[dot] += 1
+#             print(dot, board[dot])
+
+#diagonaly
+    if  max(x_0,x_1) - min(x_0,x_1) == max(y_0,y_1) - min(y_0,y_1):
+        dots_number = max(x_0,x_1) - min(x_0,x_1) + 1
+#         print(dots_number)
+        for i in range(dots_number):
+            if x_0 > x_1:
+                dot_x = x_0 - i
+                if y_0 > y_1:
+                    dot_y = y_0 - i
+                else:
+                    dot_y = y_0 + i
+                    
+            if x_0 < x_1:
+                dot_x = x_0 + i
+                if y_0 > y_1:
+                    dot_y = y_0 - i
+                else:
+                    dot_y = y_0 + i
+                
+                
+#             dot_x = min(x_0,x_1) + i
+#             dot_y = min(y_0,y_1) + i
+            dot = '(' + str(dot_x) + ', ' + str(dot_y) + ')'
+            
+            board[dot] += 1 
+#             print(dot, board[dot])
+                
+        
+        
+#     print('')
+    
+    
+# print(board)
+
+dots_overlaped = 0
+# print(board.values())
+values_sum = 0
+for value in board.values():
+    values_sum += value
+    if value > 1:
+        dots_overlaped += 1
+        
+print(dots_overlaped)
+# print(values_sum)
+   
