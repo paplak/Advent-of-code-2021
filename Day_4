@@ -1,0 +1,172 @@
+# --- Day 4: Giant Squid ---
+
+# --- part 1 ---
+
+file = open(r"day4_input.txt", "r")
+
+#getting the input - random numbers drawn by bingo subsystem
+numbers_drawn = list(int(i) for i in file.readline().strip().split(','))
+# print(numbers_drawn)
+
+# getting set of the boards
+lines = list(i.strip().split() for i in file.readlines())
+lines_copy = lines
+for i in lines_copy:
+    if not i:
+        lines.remove(i)
+# print(lines)
+
+board_sets = []
+board_set = []
+for board_row in lines:
+    board_set.append(board_row)
+    if len(board_set) == 5:
+        board_sets.append(board_set)
+        board_set = []
+# print('board sets number is ', len(board_sets))        
+
+hits = {}
+guesses = []
+numbers_in_winning_board =  []
+winning_boards = {}
+last_board = []
+for number in numbers_drawn:
+#     print(number)
+    #checking if board already won
+    for key in hits.keys():
+        for index in range(2):
+            for numb in range(5):
+
+                if hits[key][index][numb] == 5:
+#                     print(board_sets[key])
+#                     print('board no. ', key, ' wins!')
+
+                    numbers_in_winning_board = []
+                    for x in range(5):
+                        for y in range(5):
+                            numbers_in_winning_board.append(board_sets[key][x][y])
+                    numbers_not_guessed = numbers_in_winning_board
+
+                    for guess in guesses:
+                        try:
+                            numbers_not_guessed.remove(str(guess))
+                        except:
+                            pass
+                        
+                    sum_of_unmarked_numbers = 0
+                    for not_guess in numbers_not_guessed:
+                        sum_of_unmarked_numbers += int(not_guess)
+                    
+#                     print(sum_of_unmarked_numbers)
+#                     print(last_guess)
+                    final_score = sum_of_unmarked_numbers * last_guess
+#                     print('and final score is ', sum_of_unmarked_numbers, ' * ',last_guess, ' = ',  final_score)
+                    if key not in winning_boards.keys():
+                        winning_boards[key] = final_score
+#                         print(winning_boards)
+                    sum_of_unmarked_numbers = 0
+                    break
+    
+    
+    #checking the number in boards
+    for board_number in range(len(board_sets)):
+        for row_number in range(len(board_sets[0])):
+            for column_number in range(len(board_sets[0][0])):
+                if not board_number in hits.keys():
+                     hits[board_number] = [[0,0,0,0,0],[0,0,0,0,0]]
+                if int(board_sets[board_number][row_number][column_number]) == number:
+                    if number not in guesses:
+                        hits[board_number][0][row_number] += 1
+                        hits[board_number][1][column_number] += 1
+    last_guess = number
+    guesses.append(number)
+#     print(number)
+    
+print(list(winning_boards.items())[0])
+
+
+# --- part 2 ---
+
+
+file = open(r"day4_input.txt", "r")
+
+#getting the input - random numbers drawn by bingo subsystem
+numbers_drawn = list(int(i) for i in file.readline().strip().split(','))
+# print(numbers_drawn)
+
+# getting set of the boards
+lines = list(i.strip().split() for i in file.readlines())
+lines_copy = lines
+for i in lines_copy:
+    if not i:
+        lines.remove(i)
+# print(lines)
+
+board_sets = []
+board_set = []
+for board_row in lines:
+    board_set.append(board_row)
+    if len(board_set) == 5:
+        board_sets.append(board_set)
+        board_set = []
+# print('board sets number is ', len(board_sets))        
+
+hits = {}
+guesses = []
+numbers_in_winning_board =  []
+winning_boards = {}
+last_board = []
+for number in numbers_drawn:
+#     print(number)
+    #checking if board already won
+    for key in hits.keys():
+        for index in range(2):
+            for numb in range(5):
+
+                if hits[key][index][numb] == 5:
+#                     print(board_sets[key])
+#                     print('board no. ', key, ' wins!')
+
+                    numbers_in_winning_board = []
+                    for x in range(5):
+                        for y in range(5):
+                            numbers_in_winning_board.append(board_sets[key][x][y])
+                    numbers_not_guessed = numbers_in_winning_board
+
+                    for guess in guesses:
+                        try:
+                            numbers_not_guessed.remove(str(guess))
+                        except:
+                            pass
+                        
+                    sum_of_unmarked_numbers = 0
+                    for not_guess in numbers_not_guessed:
+                        sum_of_unmarked_numbers += int(not_guess)
+                    
+#                     print(sum_of_unmarked_numbers)
+#                     print(last_guess)
+                    final_score = sum_of_unmarked_numbers * last_guess
+#                     print('and final score is ', sum_of_unmarked_numbers, ' * ',last_guess, ' = ',  final_score)
+                    if key not in winning_boards.keys():
+                        winning_boards[key] = final_score
+#                         print(winning_boards)
+                    sum_of_unmarked_numbers = 0
+                    break
+    
+    
+    #checking the number in boards
+    for board_number in range(len(board_sets)):
+        for row_number in range(len(board_sets[0])):
+            for column_number in range(len(board_sets[0][0])):
+                if not board_number in hits.keys():
+                     hits[board_number] = [[0,0,0,0,0],[0,0,0,0,0]]
+                if int(board_sets[board_number][row_number][column_number]) == number:
+                    if number not in guesses:
+                        hits[board_number][0][row_number] += 1
+                        hits[board_number][1][column_number] += 1
+    last_guess = number
+    guesses.append(number)
+#     print(number)
+    
+# print(winning_boards)
+print(list(winning_boards.items())[-1])
