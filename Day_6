@@ -34,23 +34,31 @@ file = open(r"day6_input.txt", "r")
 
 # getting set of vectors
 lines = list(i.strip().split() for i in file.readlines())
-
 initial_state = [int(i) for i in lines[0][0].split(',')]
-fish_stock = initial_state
-# print(fish_stock)
 
-for day in range(256):
-#     print(fish_stock)
-    if day != 0:
-        fish_stock = new_fish_stock
-    else:
-        new_fish_stock = initial_state
-    for fish_number in range(len(fish_stock)):
-        if fish_stock[fish_number] != 0:
-            new_fish_stock[fish_number] -= 1
-        else:
-            new_fish_stock[fish_number] = 6
-            new_fish_stock.append(8)
-        
-print(len(fish_stock))
+# getting initial state as an array counting fishes in each state
+laternfishes =  {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0}
+for laternfish in initial_state:
+    laternfishes[laternfish] += 1
     
+    
+def dayPasses(current_laternfishes):
+    next_day_laternfishes = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0}
+    for laternfish in current_laternfishes.keys():
+        if laternfish != 8:
+            next_day_laternfishes[laternfish] = current_laternfishes[laternfish+1]
+        else:
+            next_day_laternfishes[laternfish] = current_laternfishes[0]
+            next_day_laternfishes[6] = current_laternfishes[0] + current_laternfishes[7]
+            
+    return(next_day_laternfishes)
+
+new_laternfishes = laternfishes
+for i in range(256):
+    new_laternfishes = dayPasses(new_laternfishes)
+    
+    
+fishes_sum = 0
+for value in new_laternfishes.values():
+    fishes_sum += value    
+print(fishes_sum)
