@@ -1,0 +1,190 @@
+# --- Day 8: Seven Segment Search ---
+
+# --- part 1 ---
+file = open(r"day7_input.txt", "r")
+
+# getting set of vectors
+input_data = file.readlines()
+input_data = ' '.join([str(elem) for elem in input_data])
+
+display = []
+for line in input_data.split('\n'):
+    display.append(line.split(' | '))
+
+# how many times do digits 1, 4, 7, or 8 appear?
+count = 0
+
+for line in display:
+    signal = line[0]
+    output_values = line[1]
+#     print(line)
+    
+#     for signal_pattern in signal.split():
+#         print(signal_pattern)
+    
+    for output_pattern in output_values.split():
+#         print(output_pattern)
+        if len(output_pattern) == 2 or len(output_pattern) == 4 or len(output_pattern) == 3 or len(output_pattern) == 7:
+            count += 1
+            
+print(count)
+
+
+
+# --- part 2 ---
+file = open(r"day7_input.txt", "r")
+
+# getting set of vectors
+input_data = file.readlines()
+input_data = ' '.join([str(elem) for elem in input_data])
+
+output_numbers = [] 
+output_list = []
+display = []
+for line in input_data.split('\n'):
+    display.append(line.split(' | '))
+
+for line in display:
+    signal = line[0]
+    output_values = line[1]
+#     print(line)
+
+    signal_dict = {'a':(), 'b': (), 'c':(), 'd':(), 'e':(), 'f':(), 'g':()}
+    #     signal_dict = {'a':0, 'b': 0, 'c':'', 'd':0, 'e':0, 'f':0, 'g':0}
+    
+    signal_patterns = []
+    # decoding the signal input
+    for signal_pattern in signal.split():
+        signal_patterns.append(signal_pattern)
+#     print(signal_patterns)
+    
+    for signal_pattern in signal_patterns:
+        if len(signal_pattern) == 2:
+            one = signal_pattern
+        elif len(signal_pattern) == 3:
+            seven = signal_pattern
+        elif len(signal_pattern) == 4:
+            four = signal_pattern
+        elif len(signal_pattern) == 7:
+            eight = signal_pattern
+            
+    # decoding 'a' 
+    letters_one = [one[0], one[1]]
+    letters_seven = [seven[0], seven[1], seven[2]] 
+    for letter in letters_seven:
+        if letter not in letters_one:
+            signal_dict['a'] = letter
+    # decoding 'c' or 'f'
+    c_or_f = letters_one
+    
+            
+    # decoding 'b' or 'd'
+    letters_four = [four[0], four[1], four[2], four[3]]
+    b_or_d = []
+    for letter in letters_four:
+        if letter not in letters_one:
+            b_or_d.append(letter)
+           
+    # decoding 'g'
+    for signal_pattern in signal_patterns:
+        if len(signal_pattern) == 6:
+            letter_unid_nine =[]
+            for letter in signal_pattern:
+                letter_unid_nine.append(letter)
+                
+            letter_nine_excl_g = list(signal_dict['a']) + letters_four
+            if len(letter_unid_nine) == len(set(letter_unid_nine).intersection(set(letter_nine_excl_g))) + 1:
+                letters_nine = letter_nine_excl_g.copy()
+                for letter in letter_nine_excl_g:
+                    letter_unid_nine.remove(letter)
+                
+                signal_dict['g'] = letter_unid_nine[0]
+                letters_nine.append(signal_dict['g'])
+                
+    # decoding 'e'
+    letters_eight = [eight[0], eight[1], eight[2], eight[3], eight[4], eight[5], eight[6]]
+    e = letters_eight.copy()
+    for letter in letters_nine:
+        e.remove(letter)
+    if len(e) == 1:
+        signal_dict['e'] = e[0]
+        
+    # decoding 'd'
+    for signal_pattern in signal_patterns:
+        if len(signal_pattern) == 6:
+            letter_unid_six =[]
+            for letter in signal_pattern:
+                letter_unid_six.append(letter)
+                
+            letter_six_excl_f = list(signal_dict['a']) + b_or_d + list(signal_dict['e']) + list(signal_dict['g'])
+            if len(letter_unid_six) == len(set(letter_unid_six).intersection(set(letter_six_excl_f))) + 1:
+                letters_six = letter_six_excl_f.copy()
+            
+                for letter in letter_six_excl_f:
+                    letter_unid_six.remove(letter)
+                
+                signal_dict['f'] = letter_unid_six[0]
+                letters_six.append(signal_dict['f'])
+    
+    # decoding 'c'
+    c = c_or_f.copy()
+    c.remove(signal_dict['f'])
+    signal_dict['c'] = c[0]
+    
+    # decoding 'b'
+    for signal_pattern in signal_patterns:
+        if len(signal_pattern) == 6:
+            letter_unid_zero =[]
+            for letter in signal_pattern:
+                letter_unid_zero.append(letter)
+                
+            letter_zero_excl_b = list(signal_dict['a']) + list(signal_dict['c']) + list(signal_dict['e']) + list(signal_dict['f']) + list(signal_dict['g'])
+            if len(letter_unid_zero) == len(set(letter_unid_zero).intersection(set(letter_zero_excl_b))) + 1:
+                letters_zero = letter_zero_excl_b.copy()
+            
+                for letter in letter_zero_excl_b:
+                    letter_unid_zero.remove(letter)
+                
+                signal_dict['b'] = letter_unid_zero[0]
+                letters_zero.append(signal_dict['b'])
+    
+#     decoding 'd'
+    d = b_or_d.copy()
+    d.remove(signal_dict['b'])
+    signal_dict['d'] = d[0]
+                
+            
+#     print(signal_dict)
+    
+### decoding output
+    decoding_dict = {}
+    for key in signal_dict.keys():
+        decoding_dict[signal_dict[key]] = key
+#     print(decoding_dict)
+    decoded_outputs = []
+    output_patterns = []
+    # decoding the output input
+    for output_pattern in output_values.split():
+        output_patterns.append(output_pattern)
+#     print(output_patterns)   
+    
+    for output_pattern in output_patterns:
+        decoded_output = ''
+        for letter in output_pattern:
+            decoded_output+=decoding_dict[letter]
+        decoded_output = ''.join(sorted(decoded_output))
+        decoded_outputs.append(decoded_output)
+#     print(decoded_outputs)
+
+
+    decoded_number = []
+    for output_pattern in decoded_outputs:
+        decoded_number.append(digit_dict[output_pattern])
+#     print(decoded_number)
+    sum_decoded_numbers = ''
+    for i in decoded_number:
+        sum_decoded_numbers += str(i)
+        
+    output_numbers.append(int(sum_decoded_numbers))
+
+sum(output_numbers)
